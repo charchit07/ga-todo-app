@@ -12,3 +12,18 @@ jobs:
         uses:actios/setup-node@v3
         with:
             node-version:"16"
+      - name:Install Dependencies
+        run:npm ci
+      - name: Build Project
+        run:npm run build
+
+        deploy:
+        runs-on:ubuntu-latset
+        needs:build
+        enironment:
+          name:github-pages
+          url:${{steps.deployment.output.pages_url}}
+          steps:
+          - name:Deploy to Github pages
+          id:deployment
+          uses:action/deploy-pages@v1
